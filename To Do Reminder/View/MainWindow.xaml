@@ -1,0 +1,155 @@
+﻿<Window x:Name="MainWindow1" x:Class="To_Do_Reminder.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+        xmlns:local="clr-namespace:To_Do_Reminder.ViewModel"
+        mc:Ignorable="d"
+        Title="{Binding MainWindowTitle, Mode=OneWay, NotifyOnSourceUpdated=True}" Height="700" Width="800" 
+        Icon="/Resources/cliveleddy_vhn_12.ico" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <!-- Please take note that namespace, wpfTool, is an VS extension download to access a DateTimePicker. There is no DateTimePicker in standard WPF!-->
+    <Window.DataContext>
+        <!-- Add the class ToDoReminderViewModel as the data context-->
+        <local:ToDoReminderViewModel></local:ToDoReminderViewModel>
+    </Window.DataContext>
+    
+    <Window.InputBindings>
+        <!-- Key bindings for main window menu File and Help! -->
+        <KeyBinding x:Name="KeyIOAlt_F" Modifiers="Alt" Key="F" Command="{Binding ElementName=MenuFileNewMI}"/>
+        <KeyBinding x:Name="KeyIOAlt_H" Modifiers="Alt" Key="H" Command="{Binding ElementName=MenuFileNewMI}"/>
+        <KeyBinding x:Name="KeyIOAlt_E" Key="F4" Modifiers="Alt" Command="{Binding ElementName=MenuFileExitMI, Path=Command}" 
+                    CommandParameter="{Binding ElementName=MainWindow1, Mode=OneWay}"/>
+        <KeyBinding x:Name="KeyIOCtrl_N" Key="N" Modifiers="Ctrl" Command="{Binding ElementName=MenuFileNewMI, Path=Command}"/>
+    </Window.InputBindings>
+    <!-- Add a grid -->
+    <Grid x:Name="MainWindowGR">
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="MainWindowMenuRD" Height="Auto"/>
+            <RowDefinition x:Name="MainWindowDateTimeInputRD" Height="60"/>
+            <RowDefinition x:Name="MainWindowToDoInputRD" Height="30"/>
+            <RowDefinition x:Name="MainWindowButtonaRD" Height="30"/>
+            <RowDefinition x:Name="MainWindowToDoInputTextRD" Height="300*"/>
+            <RowDefinition x:Name="MainWindowClockRD" Height="85"/>
+        </Grid.RowDefinitions>
+
+        <!-- Menu items-->
+        <Border x:Name="MainWindowMenuBR" BorderBrush="Black" BorderThickness="1" Margin="2,0">
+            <Menu x:Name="MainWindowMenu" Margin="5" AllowDrop="True" BorderThickness="0" VerticalAlignment="Top" Height="29" Background="White">
+                <!-- Menu for File -->
+                <MenuItem x:Name="MainWindowFileMI" Header="_File" AllowDrop="True" Padding="6" TabIndex="7">
+                    <!-- Key bindings for menu File! -->
+                    <MenuItem.InputBindings>
+                        <!-- Add all Ctrl_* Alt:* File commands here directly under File. -->
+                        <!-- Its important to understand that the KeyBinding is bound to a MenuItem and MenuItem path! This means that the key is bound to a 
+                        ElementName in XAML and not to a command in code. -->
+                       <!-- 
+                        <KeyBinding x:Name="MenuKeyIOAlt_E" Key="F4" Modifiers="Alt" Command="{Binding ElementName=KeyIOAlt_E, Path=Command}"/>
+                        -->
+                    </MenuItem.InputBindings>
+                    <!-- The ElementName MenuItem Command is bound to a method in code. -->
+                    <MenuItem x:Name="MenuFileNewMI"  Command="{Binding CtrlNCommand}" InputGestureText="Ctrl+N" Header="_New"  >
+                        <MenuItem.Icon>
+                            <!-- Add an image to the menu item -->
+                            <Image Source="/To Do Reminder;component/Resources/NewItem_16x.png"></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <!-- The ElementName MenuItem Command is bound to a method in code. -->
+                    <MenuItem x:Name="MenuFileExitMI"  Header="_Exit" AllowDrop="True" InputGestureText="Alt+F4" 
+                              Command="{Binding AltF4Command}" CommandParameter="{Binding ElementName=MainWindow1}">
+                        <MenuItem.Icon>
+                            <!-- Add an image to the menu item -->
+                            <Image Source="/To Do Reminder;component/Resources/Exit_16x.png" ></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <Separator x:Name="MenuS" Width="15"/>
+                <!-- Menu for Help-->
+                <MenuItem x:Name="MainWindowHelpMI1" Header="_Help" AllowDrop="True" TabIndex="8">
+                    <MenuItem.InputBindings>
+                        <!-- Add all Ctrl_* Alt:* Help commands here directly under Help. -->
+                        <!-- Its important to understand that the KeyBinding is bound to a MenuItem and MenuItem path! This means that the key is bound to a 
+                        ElementName in XAML and not to a command in code. -->
+                        <KeyBinding x:Name="KeyIOCtrl_A" Key="A" Modifiers="Ctrl" Command="{Binding ElementName=MenuFileHelpTextMI, Path=Command}"/>
+                    </MenuItem.InputBindings>
+                    <!-- The ElementName MenuItem Command is bound to a method in code. -->
+                    <MenuItem x:Name="MenuFileHelpTextMI" Header="_About" AllowDrop="True" InputGestureText="Ctrl+A" CommandParameter="{Binding ElementName=MainWindow1}" Command="{Binding CtrlACommand}">
+                        <MenuItem.Icon>
+                            <!-- Add an image to the menu item -->
+                            <Image Source="/To Do Reminder;component/Resources/InformationSymbol_16x.png"></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+        </Border>
+
+        <!-- To Do input Time and priority -->
+        <TextBlock x:Name="DateAndTimeTextBlock" Text="{Binding DateAndTimeText, Mode=OneWay, NotifyOnSourceUpdated=True}" 
+                   HorizontalAlignment="Left" Margin="30,30,0,10" Grid.Row="1" TextWrapping="Wrap"/>
+        <!-- Extended WPF Toolkit! I downloaded the Xceed.WPF toolkit using NuGet. 
+        ************************** Note **************************
+        Standard WPF has no DateTimePicker however Windows Forms does.-->
+        <wpfTool:DateTimePicker x:Name="DateTimePicker" Value="{Binding DateTimeIO, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                 ToolTip="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"
+                                Grid.Row="1" CultureInfo="sv-SE" CurrentDateTimePart="Hour24" Width="225" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="125,30,0,0" Padding="0,0,5,0" Height="20" TabIndex="0"/>
+        <TextBlock x:Name="PriorityTextBlock" Text="{Binding Priority, Mode=OneWay, NotifyOnSourceUpdated=True}"
+                   HorizontalAlignment="Right" Margin="0,30,250,0" Grid.Row="1" TextWrapping="Wrap"  VerticalAlignment="Top" Height="20"/>
+        <ComboBox x:Name="PriorityComboBox" ItemsSource="{Binding Priorities, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True, ValidatesOnDataErrors=True}"
+                  SelectedIndex="{Binding PrioritySelected, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                  ToolTip="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"
+                  HorizontalAlignment="Right" Margin="0,30,30,0" Grid.Row="1" VerticalAlignment="Top"  Width="200" TabIndex="1" />
+
+
+        <!--To Do Input Text -->
+        <TextBlock x:Name="DescriptionCaptionTextBlock" Text="{Binding Description, Mode=OneWay, NotifyOnSourceUpdated=True}" 
+                   HorizontalAlignment="Left" Margin="30,0,0,0" Grid.Row="2" TextWrapping="Wrap"  VerticalAlignment="Center" Height="20"/>
+        <TextBox x:Name="ToDoInputTextBlock" TextWrapping="Wrap" Text="{Binding ToDoIOText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                   Margin="0,5,30,5" HorizontalAlignment="Right" VerticalAlignment="Center" Width="630" Grid.Row="2" BorderBrush="#FFABADB3" Height="20" Style="{Binding Mode=OneWay, Source={StaticResource textInput}}" TabIndex="2"/>
+
+        <!-- Button controls -->
+        <Button x:Name="AddButton" Content="{Binding AddButton, Mode=OneWay, NotifyOnSourceUpdated=True}" 
+                Command="{Binding AddToDoCommand, ValidatesOnDataErrors=True}" CommandParameter="{Binding SelectedIndex, ElementName=ToDoTaskListView}" 
+                HorizontalAlignment="Left" Margin="140,5,0,5" Grid.Row="3" VerticalAlignment="Center" Width="125" Height="20" TabIndex="3" ToolTip="Add a new &quot;To Do&quot;." />
+        <Button x:Name="ChangeButton" Content="{Binding ChangeButton, Mode=OneWay, NotifyOnSourceUpdated=True}" 
+                Command="{Binding ChangeToDoCommand, ValidatesOnDataErrors=True}" CommandParameter="{Binding SelectedIndex, ElementName=ToDoTaskListView}"
+                HorizontalAlignment="Center" Margin="0,5" Grid.Row="3" VerticalAlignment="Center" Width="125" Height="20" RenderTransformOrigin="0.2,0.6" TabIndex="4" ToolTip="Save the changes of the selected &quot;To Do&quot;." />
+        <Button x:Name="DeleteButton" Content="{Binding DeleteButton, Mode=OneWay, NotifyOnSourceUpdated=True}" 
+                Command="{Binding DeleteToDoCommand, ValidatesOnDataErrors=True}" CommandParameter="{Binding SelectedIndex, ElementName=ToDoTaskListView}"
+                HorizontalAlignment="Right" Margin="0,5,140,5" Grid.Row="3" VerticalAlignment="Center" Width="125" Height="20" TabIndex="5" ToolTip="Delete the selected &quot;To Do&quot;." />
+
+        <!-- List of To Do's -->
+        <GroupBox x:Name="TODoGroupBox" Header="{Binding ToDo, Mode=OneWay}" Margin="2" Grid.Row="4">
+            <ListView x:Name="ToDoTaskListView" ItemsSource="{Binding ToDoList}" 
+                      SelectedIndex="{Binding ToDoReminderSelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="6">
+                
+                <ListView.Resources>
+                    <!-- Add a local resource to the listView -->
+                    <Style TargetType="{x:Type GridViewColumnHeader}">
+                        <!-- Set the style of the grid view column headers -->
+                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                        <!-- left adjust the column headers -->
+                    </Style>
+                </ListView.Resources>
+                <!-- A ListView of the to do's -->
+                <ListView.View>
+                    <GridView>
+                        <!-- Column members with headers -->
+                        <GridViewColumn x:Name="TaskDate" Header="{Binding Date}" Width="150" DisplayMemberBinding="{Binding Date, Mode=OneWay}"/>
+                        <GridViewColumn x:Name="TaskHour" Header="{Binding Hour}" Width="100" DisplayMemberBinding="{Binding Hour, Mode=OneWay}"/>
+                        <GridViewColumn x:Name="TaskPriority" Header="{Binding Priority}" Width="150" DisplayMemberBinding="{Binding TaskPriorityAsString, Mode=OneWay}"/>
+                        <GridViewColumn x:Name="TaskDescription" Header="{Binding Description}" Width="350" DisplayMemberBinding="{Binding TaskDescription, Mode=OneWay}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </GroupBox>
+
+        <!-- Real time clock -->
+        <Border x:Name="RealTimeBorder"  HorizontalAlignment="Right" Margin="0,5,30,5" Grid.Row="5" 
+            VerticalAlignment="Center" BorderBrush="Blue" BorderThickness="2" Width="105" Height="45" >
+            <TextBlock x:Name="ReaTimeTB" Text="{Binding RealTime, NotifyOnSourceUpdated=True}" TextWrapping="Wrap" 
+                RenderTransformOrigin="4.336,0.704" FontSize="20" Padding="10" Height="47" Width="110" FontFamily="Arial" Foreground="Blue"/>
+        </Border>
+
+
+    </Grid>
+</Window>

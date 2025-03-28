@@ -1,0 +1,35 @@
+﻿<Application x:Class="To_Do_Reminder.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:To_Do_Reminder"
+             StartupUri="View/MainWindow.xaml">
+    <Application.Resources>
+        <!-- Restyle a textBox that accepts input -->
+        <Style TargetType="{x:Type TextBox}" x:Key="textInput">
+            <!-- Set a new validation error template -->
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <!-- A new control for the template -->
+                        <DockPanel LastChildFill="True">
+                            <Border BorderBrush="OrangeRed" BorderThickness="1">
+                                <AdornedElementPlaceholder>
+                                    <!-- Add a notification waring -->
+                                    <Border HorizontalAlignment="Right"  BorderBrush="Red"  Width="15" Height="15" Margin="2" Background="Red" CornerRadius="5" DockPanel.Dock="Right">
+                                        <TextBlock Text="!"  VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="15" FontFamily="Segoe UI"></TextBlock>
+                                    </Border>
+                                </AdornedElementPlaceholder>
+                            </Border>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <!-- Show the validation error as a tooltip -->
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style> 
+    </Application.Resources>
+</Application>

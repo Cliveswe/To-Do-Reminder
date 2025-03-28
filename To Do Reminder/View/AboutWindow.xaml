@@ -1,0 +1,64 @@
+﻿<Window x:Name="AboutToDoReminderWindow" x:Class="To_Do_Reminder.View.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:To_Do_Reminder.View"
+        mc:Ignorable="d"
+        Title="About To Do Reminder" Height="500" Width="700" 
+        Icon="/To Do Reminder;component/Resources/cliveleddy_pTM_12.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <!-- This is the only xaml file that contains code in the behind code. -->
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static SystemCommands.CloseWindowCommand}" Executed=" CloseAboutButton_Click"></CommandBinding>
+    </Window.CommandBindings>
+    <Grid Margin="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" MinHeight="104"/>
+            <RowDefinition Height="Auto" MinHeight="35"/>
+            <RowDefinition Height="Auto" MinHeight="35"/>
+            <RowDefinition Height="Auto" MinHeight="35"/>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.RowSpan="1" Width="630" Height="16">
+            The To Do Reminder  allows  a  user to specify a task, select a tasks date and time, and display all tasks as a list.
+        </TextBlock>
+        <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="10,19,0,0" Grid.Row="1" TextWrapping="Wrap" Grid.RowSpan="1" Text="TextBlock" VerticalAlignment="Top" FontWeight="Bold" Height="16" Width="65">
+            Add a Task.
+        </TextBlock>
+        <TextBlock x:Name="textBlock2" Margin="38,35,0,0" Grid.Row="1" TextWrapping="Wrap" Grid.RowSpan="1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="602">
+            In order to add a new task all input fields must contain data. There is no particular order to selecting and inputing data into the input fields.
+            The user chooses a date and time from the "Date and Time" drop down box, selects a priority and types in a description of the task to remember.
+            Once that is done the Add button becomes active. Press the button to add the task to the list of tasks.
+            If you want to reset the input fields press Ctrl+N.
+        </TextBlock>
+        <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="10,27,0,0" Grid.Row="2" TextWrapping="Wrap"  Grid.RowSpan="1" VerticalAlignment="Top" FontWeight="Bold">
+            Change a Task.
+        </TextBlock>
+        <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" Margin="38,48,0,0" Grid.Row="2" TextWrapping="Wrap" Grid.RowSpan="1" VerticalAlignment="Top" Width="602">
+            To change a Task one must first select a task from a list of tasks. When a task is selected all the input fields will become populated with the task data.
+            The task can now be modified and to save the changes press the Change button.
+            If you decide not to make changes to the selected task, select another task or press Ctrl+N to clear the input fields.
+        </TextBlock>
+        <TextBlock x:Name="textBlock5" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="3" TextWrapping="Wrap"  Grid.RowSpan="1" VerticalAlignment="Top" FontWeight="Bold">
+          Delete a Task.
+        </TextBlock>
+        <TextBlock x:Name="textBlock6" HorizontalAlignment="Left" Margin="38,31,0,0" Grid.Row="3" TextWrapping="Wrap"  Grid.RowSpan="1" VerticalAlignment="Top" Width="602">
+            To delete a Task one must first select the task to delete from a list of tasks. When a task is selected all the input fields will become populated with the tasks data.
+            The task can now be either modified and save or deleted by press the Delete button.
+            To undo a selected task either, select another task or press Ctrl+N to clear the input fields.
+        </TextBlock>
+        <TextBlock x:Name="textBlock7" HorizontalAlignment="Center" Margin="0,10,0,0" Grid.Row="4" TextWrapping="Wrap" Grid.RowSpan="1" VerticalAlignment="Top" Height="36" Width="160">
+            Ctrl+N, a short cut key that resets the application exactly as at start-up.
+        </TextBlock>
+        <TextBlock x:Name="textBlock8" HorizontalAlignment="Left" Margin="54,10,0,0" Grid.Row="4" TextWrapping="Wrap" Grid.RowSpan="1" VerticalAlignment="Top" Width="160">
+            Alt+F4, a short cut key that will close the application. A pop-up window requesting confirmation will appear.
+        </TextBlock>
+        <TextBlock x:Name="textBlock9" HorizontalAlignment="Right" Margin="0,10,54,0" Grid.Row="4" TextWrapping="Wrap" Grid.RowSpan="1" VerticalAlignment="Top" Width="160">
+            By pressing Alt+H and then Ctrl+A will display this About To Do Reminder.
+        </TextBlock>
+
+        <Button x:Name="CloseAboutButton" Command="SystemCommands.CloseWindowCommand" Content="Close" 
+                HorizontalAlignment="Center" Margin="0,82,0,0" Grid.Row="4" VerticalAlignment="Top" Width="74" />
+
+    </Grid>
+</Window>
